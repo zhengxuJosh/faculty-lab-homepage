@@ -2241,6 +2241,16 @@ body[data-page="home"] section[id] {
   opacity: 1;
 }
 
+.news-feature > div:nth-child(2) > .news-feature-paper-title {
+  margin: -12px 0 26px;
+  color: #c8d9dc;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-transform: none;
+}
+
 .news-feature h2 {
   margin: 0 0 28px;
   font-family: var(--serif);
@@ -2943,6 +2953,10 @@ body[data-page="home"] section[id] {
   color: var(--muted);
   font-size: 12px;
   line-height: 1.4;
+}
+
+.pi-timeline .pi-timeline-prior {
+  font-size: 11px;
 }
 
 .pi-background-column--education {
