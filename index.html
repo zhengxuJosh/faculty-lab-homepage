@@ -15,8 +15,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20261106-launch" />
-    <script src="script.js?v=20261106-launch" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261106-schedule" />
+    <script src="availability.js?v=20261106-schedule" defer></script>
+    <script src="script.js?v=20261106-schedule" defer></script>
   </head>
   <body data-page="home" data-root=".">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -244,7 +245,7 @@
               </div>
               <h3 data-en="Prospective students" data-zh="有意加入的学生">Prospective students</h3>
               <p data-en="Discuss research interests and fit with X Lab." data-zh="交流研究兴趣与 X 实验室的方向。">Discuss research interests and fit with X Lab.</p>
-              <button class="booking-card-action" type="button" data-schedule-kind="student" aria-controls="booking-planner" aria-expanded="false" data-en="Choose a date ↗" data-zh="选择日期 ↗">Choose a date ↗</button>
+              <button class="booking-card-action" type="button" data-schedule-kind="student" aria-controls="booking-planner" aria-expanded="true" data-en="Choose a date ↗" data-zh="选择日期 ↗">Choose a date ↗</button>
             </article>
             <article class="booking-card reveal">
               <div class="booking-card-top">
@@ -253,17 +254,16 @@
               </div>
               <h3 data-en="Research collaborators" data-zh="科研合作者">Research collaborators</h3>
               <p data-en="Explore a research question or collaboration." data-zh="探讨研究问题与合作机会。">Explore a research question or collaboration.</p>
-              <button class="booking-card-action" type="button" data-schedule-kind="collaborator" aria-controls="booking-planner" aria-expanded="false" data-en="Choose a date ↗" data-zh="选择日期 ↗">Choose a date ↗</button>
+              <button class="booking-card-action" type="button" data-schedule-kind="collaborator" aria-controls="booking-planner" aria-expanded="true" data-en="Choose a date ↗" data-zh="选择日期 ↗">Choose a date ↗</button>
             </article>
           </div>
-          <div class="booking-planner" id="booking-planner" hidden>
+          <div class="booking-planner" id="booking-planner">
             <div class="booking-planner-heading">
               <div>
                 <p class="section-index" data-en="Meeting request" data-zh="预约申请">Meeting request</p>
                 <h3 id="booking-planner-title">Prospective students</h3>
                 <p data-en="Choose a preferred date and time. This is a request, not a confirmed appointment." data-zh="请选择希望交流的日期与时间。这是预约申请，不代表会议已确认。">Choose a preferred date and time. This is a request, not a confirmed appointment.</p>
               </div>
-              <button class="booking-planner-close" type="button" aria-label="Close meeting request">×</button>
             </div>
             <div class="booking-planner-grid">
               <div class="booking-calendar">
@@ -274,11 +274,19 @@
                 </div>
                 <div class="booking-weekdays" aria-hidden="true"><span data-en="Mon" data-zh="周一">Mon</span><span data-en="Tue" data-zh="周二">Tue</span><span data-en="Wed" data-zh="周三">Wed</span><span data-en="Thu" data-zh="周四">Thu</span><span data-en="Fri" data-zh="周五">Fri</span><span data-en="Sat" data-zh="周六">Sat</span><span data-en="Sun" data-zh="周日">Sun</span></div>
                 <div class="booking-days" id="booking-days" role="group" aria-label="Preferred meeting date"></div>
-                <p class="booking-calendar-help" data-en="Dates are for requests only; live availability is not connected yet." data-zh="所选日期仅用于提出申请，目前尚未连接实时空闲时段。">Dates are for requests only; live availability is not connected yet.</p>
+                <p class="booking-calendar-help booking-legend"><span class="booking-busy-dot" aria-hidden="true"></span><span data-en="Busy periods on this date" data-zh="当天有已占用时段">Busy periods on this date</span></p>
+                <div class="booking-recurring">
+                  <strong data-en="Weekly busy times · Beijing time" data-zh="每周已占用时段 · 北京时间">Weekly busy times · Beijing time</strong>
+                  <p data-en="Nov 9, 2026 – Jan 1, 2027" data-zh="2026年11月9日—2027年1月1日">Nov 9, 2026 – Jan 1, 2027</p>
+                  <ul><li><span data-en="Monday" data-zh="周一">Monday</span><time>17:45–21:00</time></li><li><span data-en="Wednesday" data-zh="周三">Wednesday</span><time>09:30–12:15</time></li></ul>
+                </div>
+                <div class="booking-day-busy" id="booking-day-busy" aria-live="polite"></div>
+                <p class="booking-calendar-help" data-en="Published busy times are blocked. Other times are subject to confirmation; this calendar is maintained manually." data-zh="已公布的占用时段不可预约；其他时间仍需确认，此日历由人工维护。">Published busy times are blocked. Other times are subject to confirmation; this calendar is maintained manually.</p>
               </div>
               <form class="booking-request-form" id="booking-request-form">
                 <p class="booking-date-summary"><span data-en="Preferred date" data-zh="希望交流的日期">Preferred date</span> <strong id="booking-selected-date" aria-live="polite">Choose a date on the calendar</strong></p>
-                <label><span data-en="Preferred time · Beijing time (UTC+8)" data-zh="希望交流的时间 · 北京时间（UTC+8）">Preferred time · Beijing time (UTC+8)</span><input name="time" type="time" required /></label>
+                <label><span data-en="Preferred time · Beijing time (UTC+8)" data-zh="希望交流的时间 · 北京时间（UTC+8）">Preferred time · Beijing time (UTC+8)</span><input name="time" type="time" aria-describedby="booking-time-feedback" required /></label>
+                <p class="booking-time-feedback" id="booking-time-feedback" aria-live="polite"></p>
                 <label><span data-en="Your name" data-zh="姓名">Your name</span><input name="name" type="text" autocomplete="name" maxlength="100" required /></label>
                 <label><span data-en="Email" data-zh="邮箱">Email</span><input name="email" type="email" autocomplete="email" maxlength="200" required /></label>
                 <label><span data-en="Institution" data-zh="学校或机构">Institution</span><input name="institution" type="text" autocomplete="organization" maxlength="150" required /></label>

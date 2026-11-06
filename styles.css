@@ -1458,6 +1458,83 @@ button {
   cursor: not-allowed;
 }
 
+.booking-days button.has-busy-time {
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.booking-busy-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  background: #a34b30;
+  border-radius: 50%;
+}
+
+.booking-days .booking-busy-dot {
+  position: absolute;
+  bottom: 6px;
+  left: calc(50% - 3px);
+}
+
+.booking-days button[aria-pressed="true"] .booking-busy-dot {
+  background: #ffd2a6;
+}
+
+.booking-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.booking-recurring,
+.booking-day-busy {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.booking-recurring strong,
+.booking-day-busy strong {
+  display: block;
+  font-weight: 600;
+}
+
+.booking-recurring p,
+.booking-day-busy p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.booking-recurring ul,
+.booking-day-busy ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.booking-recurring li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.booking-time-feedback {
+  align-self: end;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.booking-time-feedback.is-error {
+  color: #a13f2a;
+}
+
 .booking-calendar-help,
 .booking-form-note {
   margin: 18px 0 0;

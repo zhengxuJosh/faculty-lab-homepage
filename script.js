@@ -212,7 +212,9 @@ const bookingPlanner = document.getElementById("booking-planner");
 
 if (bookingPlanner) {
   const scheduleButtons = [...document.querySelectorAll("[data-schedule-kind]")];
-  const closeButton = bookingPlanner.querySelector(".booking-planner-close");
+  const availability = globalThis.XLabAvailability;
+  const busyDetails = document.getElementById("booking-day-busy");
+  const timeFeedback = document.getElementById("booking-time-feedback");
   const title = document.getElementById("booking-planner-title");
   const monthLabel = document.getElementById("booking-month-label");
   const previousMonth = bookingPlanner.querySelector(".booking-month-prev");
@@ -228,12 +230,12 @@ if (bookingPlanner) {
   );
   const today = new Date(Date.UTC(beijingTodayParts.year, beijingTodayParts.month - 1, beijingTodayParts.day));
   const firstRequestDate = new Date(today.getTime() + 86400000);
-  const lastRequestDate = new Date(today.getTime() + 30 * 86400000);
+  const lastRequestDate = new Date(Math.max(today.getTime() + 30 * 86400000, Date.parse(`${availability.endDate}T00:00:00Z`)));
   let visibleYear = firstRequestDate.getUTCFullYear();
   let visibleMonth = firstRequestDate.getUTCMonth();
-  let selectedDate = null;
+  let selectedDate = firstRequestDate;
   let selectedKind = "student";
-  let lastTrigger = null;
+  const timeInput = requestForm.elements.namedItem("time");
 
   function formatMeetingDate(date) {
     const language = document.documentElement.lang === "zh" ? "zh-CN" : "en-US";
@@ -248,11 +250,51 @@ if (bookingPlanner) {
     selectedDateLabel.textContent = selectedDate
       ? formatMeetingDate(selectedDate)
       : (isChinese ? "请在日历中选择日期" : "Choose a date on the calendar");
-    closeButton.setAttribute("aria-label", isChinese ? "关闭预约申请" : "Close meeting request");
+    renderBusyDetails();
+    validateMeetingTime();
     previousMonth.setAttribute("aria-label", isChinese ? "上个月" : "Previous month");
     nextMonth.setAttribute("aria-label", isChinese ? "下个月" : "Next month");
     daysContainer.setAttribute("aria-label", isChinese ? "希望交流的日期" : "Preferred meeting date");
   }
+
+  function renderBusyDetails() {
+    const isChinese = document.documentElement.lang === "zh";
+    const periods = selectedDate ? availability.busyOn(selectedDate.toISOString().slice(0, 10)) : [];
+    busyDetails.replaceChildren();
+    const heading = document.createElement("strong");
+    heading.textContent = `${formatMeetingDate(selectedDate)} · ${isChinese ? "已占用时段" : "Busy times"}`;
+    busyDetails.append(heading);
+    const list = document.createElement("ul");
+    for (const period of periods) {
+      const item = document.createElement("li");
+      item.textContent = `${period.start}–${period.end} · ${isChinese ? "已占用" : "Busy"}`;
+      list.append(item);
+    }
+    if (periods.length) busyDetails.append(list);
+    else {
+      const note = document.createElement("p");
+      note.textContent = isChinese ? "当天暂无已公布的占用时段，预约仍需确认。" : "No published busy times for this date. Requests still need confirmation.";
+      busyDetails.append(note);
+    }
+  }
+
+  function validateMeetingTime() {
+    const isChinese = document.documentElement.lang === "zh";
+    const duration = selectedKind === "student" ? 20 : 30;
+    const valid = !timeInput.value || (selectedDate && availability.canRequest(selectedDate.toISOString().slice(0, 10), timeInput.value, duration));
+    const message = isChinese
+      ? `请选择可容纳完整 ${duration} 分钟会议、且不与已占用时段重叠的时间。`
+      : `Choose a time for the full ${duration}-minute meeting without overlapping a busy period.`;
+    timeInput.setCustomValidity(valid ? "" : message);
+    timeInput.setAttribute("aria-invalid", String(!valid));
+    timeFeedback.textContent = valid
+      ? (isChinese ? `本次交流 ${duration} 分钟；请避开已占用时段。` : `This meeting lasts ${duration} minutes. Please avoid busy periods.`)
+      : message;
+    timeFeedback.classList.toggle("is-error", !valid);
+    return valid;
+  }
+
+  timeInput.addEventListener("input", validateMeetingTime);
 
   function renderBookingCalendar() {
     const language = document.documentElement.lang === "zh" ? "zh-CN" : "en-US";
@@ -272,7 +314,16 @@ if (bookingPlanner) {
       const button = document.createElement("button");
       button.type = "button";
       button.textContent = String(day);
-      button.setAttribute("aria-label", formatMeetingDate(date));
+      const busy = availability.busyOn(date.toISOString().slice(0, 10));
+      const busyLabel = document.documentElement.lang === "zh" ? "已占用" : "Busy";
+      button.setAttribute("aria-label", `${formatMeetingDate(date)}${busy.length ? ` · ${busyLabel} ${busy.map((period) => `${period.start}–${period.end}`).join(", ")}` : ""}`);
+      if (busy.length) {
+        button.classList.add("has-busy-time");
+        const marker = document.createElement("span");
+        marker.className = "booking-busy-dot";
+        marker.setAttribute("aria-hidden", "true");
+        button.append(marker);
+      }
       button.disabled = date < firstRequestDate || date > lastRequestDate;
       button.setAttribute("aria-pressed", String(selectedDate?.getTime() === date.getTime()));
       if (!button.disabled) {
@@ -291,18 +342,11 @@ if (bookingPlanner) {
   scheduleButtons.forEach((button) => {
     button.addEventListener("click", () => {
       selectedKind = button.dataset.scheduleKind;
-      lastTrigger = button;
       bookingPlanner.hidden = false;
-      scheduleButtons.forEach((item) => item.setAttribute("aria-expanded", String(item === button)));
+      scheduleButtons.forEach((item) => item.setAttribute("aria-expanded", "true"));
       updateBookingLabels();
       bookingPlanner.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     });
-  });
-
-  closeButton.addEventListener("click", () => {
-    bookingPlanner.hidden = true;
-    scheduleButtons.forEach((button) => button.setAttribute("aria-expanded", "false"));
-    lastTrigger?.focus();
   });
 
   function changeMonth(amount) {
@@ -320,12 +364,17 @@ if (bookingPlanner) {
       daysContainer.querySelector("button:not(:disabled)")?.focus();
       return;
     }
+    if (selectedDate < firstRequestDate || selectedDate > lastRequestDate || !validateMeetingTime()) {
+      timeInput.reportValidity();
+      return;
+    }
     const values = new FormData(requestForm);
     const role = selectedKind === "student" ? "Prospective Student" : "Research Collaboration";
     const body = [
       `Meeting type: ${role}`,
       `Preferred date: ${selectedDate.toISOString().slice(0, 10)}`,
       `Preferred time: ${values.get("time")} (Beijing time, UTC+8)`,
+      `Meeting duration: ${selectedKind === "student" ? 20 : 30} minutes`,
       `Preferred platform: ${values.get("platform")}`,
       `Name: ${values.get("name")}`,
       `Email: ${values.get("email")}`,
