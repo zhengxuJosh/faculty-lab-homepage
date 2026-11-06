@@ -7,6 +7,7 @@ globalThis.XLabAvailability = (() => {
     Object.freeze({ weekday: 3, start: "09:30", end: "12:15" }),
   ]);
   const oneOff = Object.freeze([
+    Object.freeze({ date: "2026-11-08", start: "22:00", end: "23:00" }),
     Object.freeze({ date: "2026-11-10", start: "16:00", end: "17:00" }),
     Object.freeze({ date: "2026-11-12", start: "16:00", end: "17:30" }),
   ]);

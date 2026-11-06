@@ -16,7 +16,7 @@ test('term boundaries and weekly dates use Beijing calendar dates', () => {
   for (let day = Date.parse('2026-11-01T00:00:00Z'); day <= Date.parse('2027-01-08T00:00:00Z'); day += 86400000) {
     total += schedule.busyOn(new Date(day).toISOString().slice(0, 10)).length;
   }
-  assert.equal(total, 18);
+  assert.equal(total, 19);
 });
 
 test('one-off meetings block only their dates, including the full requested duration', () => {
@@ -36,6 +36,20 @@ test('one-off meetings block only their dates, including the full requested dura
     assert.deepEqual(schedule.busyOn(date), []);
     assert.equal(schedule.canRequest(date, '16:00', 30), true);
   }
+});
+
+test('Sunday guidance blocks its exact date even before weekly teaching begins', () => {
+  assert.equal(schedule.busyOn('2026-11-08')[0].start, '22:00');
+  assert.equal(schedule.busyOn('2026-11-08')[0].end, '23:00');
+  for (const duration of [20, 30]) {
+    assert.equal(schedule.canRequest('2026-11-08', duration === 20 ? '21:40' : '21:30', duration), true);
+    assert.equal(schedule.canRequest('2026-11-08', '21:50', duration), false);
+    assert.equal(schedule.canRequest('2026-11-08', '22:00', duration), false);
+    assert.equal(schedule.canRequest('2026-11-08', '22:59', duration), false);
+    assert.equal(schedule.canRequest('2026-11-08', '23:00', duration), true);
+    assert.equal(schedule.canRequest('2026-11-15', '22:00', duration), true);
+  }
+  assert.deepEqual(schedule.busyOn('2026-11-15'), []);
 });
 
 test('whole meeting must fit, with adjacent meetings allowed', () => {
