@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.pyc
+tmp/
+# Local design sources and superseded portraits are not used by the site.
+assets/brand/
+assets/team/xu-zheng.jpg
+assets/team/xu-zheng-gbu.jpg
+# Superseded poster exports; the v2 versions are current.
+assets/recruitment/xlab-recruitment-poster-*-v1.png
