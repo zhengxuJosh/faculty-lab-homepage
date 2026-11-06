@@ -7,7 +7,7 @@ test('term boundaries and weekly dates use Beijing calendar dates', () => {
   assert.deepEqual(schedule.busyOn('2026-11-02'), []);
   assert.equal(schedule.busyOn('2026-11-09')[0].start, '17:45');
   assert.equal(schedule.busyOn('2026-11-11')[0].end, '12:15');
-  assert.deepEqual(schedule.busyOn('2026-11-10'), []);
+  assert.deepEqual(schedule.busyOn('2026-11-13'), []);
   assert.equal(schedule.busyOn('2026-12-28').length, 1);
   assert.equal(schedule.busyOn('2026-12-30').length, 1);
   assert.deepEqual(schedule.busyOn('2027-01-01'), []);
@@ -16,7 +16,26 @@ test('term boundaries and weekly dates use Beijing calendar dates', () => {
   for (let day = Date.parse('2026-11-01T00:00:00Z'); day <= Date.parse('2027-01-08T00:00:00Z'); day += 86400000) {
     total += schedule.busyOn(new Date(day).toISOString().slice(0, 10)).length;
   }
-  assert.equal(total, 16);
+  assert.equal(total, 18);
+});
+
+test('one-off meetings block only their dates, including the full requested duration', () => {
+  assert.equal(schedule.busyOn('2026-11-10')[0].end, '17:00');
+  assert.equal(schedule.busyOn('2026-11-12')[0].end, '17:30');
+  for (const [date, end] of [['2026-11-10', '17:00'], ['2026-11-12', '17:30']]) {
+    for (const duration of [20, 30]) {
+      assert.equal(schedule.canRequest(date, duration === 20 ? '15:40' : '15:30', duration), true);
+      assert.equal(schedule.canRequest(date, '15:50', duration), false);
+      assert.equal(schedule.canRequest(date, '16:00', duration), false);
+      assert.equal(schedule.canRequest(date, '16:59', duration), false);
+      assert.equal(schedule.canRequest(date, end, duration), true);
+    }
+  }
+  assert.equal(schedule.canRequest('2026-11-12', '17:29', 20), false);
+  for (const date of ['2026-11-03', '2026-11-05', '2026-11-17', '2026-11-19']) {
+    assert.deepEqual(schedule.busyOn(date), []);
+    assert.equal(schedule.canRequest(date, '16:00', 30), true);
+  }
 });
 
 test('whole meeting must fit, with adjacent meetings allowed', () => {
