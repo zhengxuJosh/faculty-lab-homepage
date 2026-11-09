@@ -124,7 +124,29 @@ button {
   display: inline-flex;
   align-items: center;
   justify-self: start;
-  gap: 12px;
+  gap: 10px;
+}
+
+.brand-university {
+  display: flex;
+  width: clamp(82px, 7vw, 106px);
+  height: 38px;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.brand-university img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: grayscale(1) brightness(0);
+}
+
+.brand-divider {
+  width: 1px;
+  height: 27px;
+  background: var(--line);
+  flex: 0 0 auto;
 }
 
 .brand-mark {
@@ -138,25 +160,6 @@ button {
 .brand-mark img {
   width: 100%;
   height: auto;
-}
-
-.brand-copy {
-  display: grid;
-  line-height: 1.15;
-}
-
-.brand-copy strong {
-  font-family: var(--serif);
-  font-size: 21px;
-  letter-spacing: -0.02em;
-}
-
-.brand-copy small {
-  margin-top: 0;
-  color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .site-nav {
@@ -1801,10 +1804,6 @@ button {
     gap: 18px;
   }
 
-  .brand-copy {
-    display: none;
-  }
-
   .menu-toggle {
     display: grid;
     width: 34px;
@@ -2055,13 +2054,26 @@ button {
 }
 
 @media (max-width: 420px) {
-  .brand-mark {
-    width: 108px;
+  .nav-shell {
+    gap: 12px;
+  }
+
+  .brand {
+    gap: 6px;
+  }
+
+  .brand-university {
+    width: clamp(70px, 22vw, 88px);
     height: 32px;
   }
 
-  .brand-copy strong {
-    font-size: 17px;
+  .brand-divider {
+    height: 22px;
+  }
+
+  .brand-mark {
+    width: clamp(80px, 25vw, 100px);
+    height: 32px;
   }
 
   .hero-visual {

@@ -12,10 +12,9 @@ if (headerMount) {
     <header class="site-header">
       <div class="nav-shell">
         <a class="brand" href="${pathTo()}" aria-label="X Lab at Great Bay University homepage">
+          <span class="brand-university"><img src="${pathTo("assets/team/gbu-logo.png")}" alt="" /></span>
+          <span class="brand-divider" aria-hidden="true"></span>
           <span class="brand-mark"><img src="${pathTo("assets/x-lab-logo-black.svg")}" alt="" /></span>
-          <span class="brand-copy">
-            <small data-en="Multimodal and Situational Intelligence" data-zh="多模态与情境智能">Multimodal and Situational Intelligence</small>
-          </span>
         </a>
 
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
