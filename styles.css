@@ -129,16 +129,15 @@ button {
 
 .brand-mark {
   display: flex;
-  width: clamp(92px, 7vw, 112px);
+  width: clamp(108px, 8vw, 132px);
   height: 38px;
   align-items: center;
+  flex: 0 0 auto;
 }
 
 .brand-mark img {
   width: 100%;
   height: auto;
-  filter: grayscale(1) brightness(0);
-  opacity: 0.86;
 }
 
 .brand-copy {
@@ -153,7 +152,7 @@ button {
 }
 
 .brand-copy small {
-  margin-top: 3px;
+  margin-top: 0;
   color: var(--muted);
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -1667,12 +1666,16 @@ button {
 }
 
 .footer-brand {
-  font-family: var(--serif);
-  font-size: 28px;
+  display: inline-flex;
+  width: 132px;
+  min-height: 37px;
+  align-items: center;
 }
 
-.footer-brand span {
-  color: var(--coral);
+.footer-brand img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .footer-grid p {
@@ -1798,7 +1801,7 @@ button {
     gap: 18px;
   }
 
-  .brand-copy small {
+  .brand-copy {
     display: none;
   }
 
@@ -2053,7 +2056,7 @@ button {
 
 @media (max-width: 420px) {
   .brand-mark {
-    width: 88px;
+    width: 108px;
     height: 32px;
   }
 

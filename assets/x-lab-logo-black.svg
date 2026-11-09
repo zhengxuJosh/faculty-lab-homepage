@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 218" role="img" aria-labelledby="title description">
+  <title id="title">X Lab</title>
+  <desc id="description">Geometric X Lab wordmark with a fine horizontal split inspired by Great Bay University's typography.</desc>
+  <defs>
+    <mask id="split" maskUnits="userSpaceOnUse" x="0" y="0" width="790" height="218">
+      <rect width="790" height="218" fill="#fff" />
+      <rect y="151" width="790" height="4" fill="#000" />
+    </mask>
+  </defs>
+  <g fill="none" stroke="#16191B" stroke-width="30" stroke-linecap="butt" stroke-linejoin="miter" mask="url(#split)">
+    <path d="M36 28 174 180 M174 28 36 180" />
+    <path d="M276 28 V180 H380" />
+    <path d="M450 180 505 28 560 180 M470 126 H540" />
+    <path d="M635 28 V180 M635 28 H677 C706 28 721 42 721 63 C721 86 703 98 677 98 H635 M635 98 H681 C710 98 726 113 726 137 C726 164 707 180 679 180 H635" />
+  </g>
+</svg>

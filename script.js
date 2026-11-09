@@ -12,9 +12,8 @@ if (headerMount) {
     <header class="site-header">
       <div class="nav-shell">
         <a class="brand" href="${pathTo()}" aria-label="X Lab at Great Bay University homepage">
-          <span class="brand-mark"><img src="${pathTo("assets/team/gbu-logo.png")}" alt="Great Bay University" /></span>
+          <span class="brand-mark"><img src="${pathTo("assets/x-lab-logo-black.svg")}" alt="" /></span>
           <span class="brand-copy">
-            <strong data-en="X Lab" data-zh="X实验室">X Lab</strong>
             <small data-en="Multimodal and Situational Intelligence" data-zh="多模态与情境智能">Multimodal and Situational Intelligence</small>
           </span>
         </a>
@@ -42,7 +41,7 @@ if (footerMount) {
     <footer class="site-footer">
       <div class="section-shell footer-grid">
         <div>
-          <a class="footer-brand" href="${pathTo()}">X<span>·</span>LAB</a>
+          <a class="footer-brand" href="${pathTo()}" aria-label="X Lab homepage"><img src="${pathTo("assets/x-lab-logo-black.svg")}" alt="" loading="lazy" /></a>
         </div>
         <div class="footer-address">
           <p data-en="School of Computing and Information Technology" data-zh="信息科学技术学院">School of Computing and Information Technology</p>
