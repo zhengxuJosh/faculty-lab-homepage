@@ -2951,14 +2951,24 @@ body[data-page="home"] section[id] {
 
 .team-school-mark--gbu {
   width: 148px;
-  height: 36px;
+  height: auto;
   padding: 0;
   background: transparent;
+  gap: 3px;
 }
 
 .team-school-mark--gbu img {
+  height: auto;
   filter: grayscale(1) brightness(0);
   opacity: 0.86;
+}
+
+.team-school-mark--gbu span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .team-card-copy {
