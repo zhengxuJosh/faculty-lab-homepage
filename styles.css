@@ -2675,6 +2675,17 @@ body[data-page="home"] section[id] {
   object-position: center center;
 }
 
+.team-card--pi .team-card-photo--xu > img {
+  width: 100%;
+  object-position: center top;
+  transform: scale(1.7);
+  transform-origin: center top;
+}
+
+.team-card--pi:hover .team-card-photo--xu > img {
+  transform: scale(1.73);
+}
+
 .team-card:not(.team-card--pi) .team-card-identity {
   padding: 16px 16px 0;
 }
