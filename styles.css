@@ -151,7 +151,7 @@ button {
 
 .brand-mark {
   display: flex;
-  width: clamp(108px, 8vw, 132px);
+  width: 56px;
   height: 38px;
   align-items: center;
   flex: 0 0 auto;
@@ -1670,7 +1670,7 @@ button {
 
 .footer-brand {
   display: inline-flex;
-  width: 132px;
+  width: 56px;
   min-height: 37px;
   align-items: center;
 }
@@ -2072,7 +2072,7 @@ button {
   }
 
   .brand-mark {
-    width: clamp(80px, 25vw, 100px);
+    width: 47px;
     height: 32px;
   }
 
